@@ -1,0 +1,174 @@
+#include "SoftwareSerial.h"
+String ssid = "quyquy";
+
+String password = "12344567";
+
+SoftwareSerial esp(4, 5); // RX, TX
+
+String data;
+int dem=50;
+
+String server = "doanvdk.16mb.com";
+String url = "http://doanvdk.16mb.com/device.json";
+String url2 = "http://doanvdk.16mb.com/time.php";
+
+void setup() {
+
+  esp.begin(9600);
+
+  Serial.begin(9600);
+
+  reset();
+
+  connectWifi();
+}
+
+//reset module esp8266
+void reset() {
+  esp.println("AT+RST");
+  delay(1000);
+  if (esp.find("OK"))
+    Serial.println("Module Reset");
+}
+
+void connectWifi() {
+
+  String cmd = "AT+CWJAP=\"" + ssid + "\",\"" + password + "\"";
+
+  esp.println(cmd);
+
+  delay(1000);
+
+  if (esp.find("OK")) {
+
+    Serial.println("Connected!");
+
+  } else {
+
+    connectWifi();
+
+    Serial.println("Cannot connect to wifi");
+  }
+
+}
+
+void loop() {
+
+  httppost();
+
+  delay(100);
+  if(dem>=100){
+     httpRequestTime();
+     dem=50;
+  }
+}
+
+void httppost() {
+
+  esp.println("AT+CIPSTART=\"TCP\",\"" + server + "\",80"); //start a TCP connection.
+
+  if (esp.find("OK")) {
+
+    Serial.println("TCP connection ready");
+
+  }
+
+  data = "";
+  String postRequest =
+
+    "POST " + url + " HTTP/1.0\r\n" +
+
+    "Host: " + server + "\r\n" +
+
+    "Accept: *" + "/" + "*\r\n" +
+
+    "Content-Length: " + data.length() + "\r\n" +
+
+    "Content-Type: application/x-www-form-urlencoded\r\n" +
+
+    "\r\n" + data;
+
+  String sendCmd = "AT+CIPSEND="; //do dai string gui
+
+  esp.print(sendCmd);
+
+  esp.println(postRequest.length());
+  
+  if (esp.find(">")) {
+    Serial.println("Sending..");
+    esp.print(postRequest);
+
+    if (esp.find("SEND OK")) {
+      Serial.println("Packet sent");
+
+      while (esp.available()) {
+        dem++;
+        String tmpResp = esp.readString();
+        int a = tmpResp.length();
+        if (a > 220) {
+          tmpResp.remove(0, 224);
+        }
+         
+         Serial.println(tmpResp);
+         
+        
+        for(int i=0;i<tmpResp.length();i++){
+           Serial.print(i);
+           Serial.println(tmpResp[i]);
+        }
+  
+        if(tmpResp[8]=='1')      analogWrite(10,255);
+        else  analogWrite(10,0);
+        if(tmpResp[18]=='1')      analogWrite(6,255);
+        else  analogWrite(6,0);
+        if(tmpResp[28]=='1')      analogWrite(11,255);
+        else  analogWrite(11,0);
+        if (tmpResp[38]=='1')      analogWrite(9,255);
+        else analogWrite(9,0);
+      }
+        esp.println("AT+CIPCLOSE");
+    }
+
+  }
+}
+
+void httpRequestTime() {
+
+  esp.println("AT+CIPSTART=\"TCP\",\"" + server + "\",80"); //start a TCP connection.
+
+  if (esp.find("OK")) {
+
+    Serial.println("TCP connection ready");
+
+  }
+
+  String postRequest =
+
+    "POST " + url2 + " HTTP/1.0\r\n" +
+
+    "Host: " + server + "\r\n" +
+
+    "Accept: *" + "/" + "*\r\n" +
+
+    "Content-Length: " + data.length() + "\r\n" +
+
+    "Content-Type: application/x-www-form-urlencoded\r\n" +
+
+    "\r\n" + data;
+
+  String sendCmd = "AT+CIPSEND="; //do dai string gui
+
+  esp.print(sendCmd);
+
+  esp.println(postRequest.length());
+  
+  if (esp.find(">")) {
+    Serial.println("Sending..");
+    esp.print(postRequest);
+
+    if (esp.find("SEND OK"))
+      Serial.println("Packet sent");
+    esp.println("AT+CIPCLOSE");
+
+  }
+}
