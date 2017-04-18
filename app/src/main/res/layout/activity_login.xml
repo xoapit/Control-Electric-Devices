@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background= "#16a085"
+    tools:context="xoapit.controldev.LoginActivity">
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:background="#ecf0f1"
+        android:textAlignment="center"
+        android:ems="10"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:padding="15dp"
+        android:id="@+id/txtUser"
+        android:layout_marginBottom="50dp"
+        android:layout_above="@+id/txtPass"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:background="#ecf0f1"
+        android:padding="15dp"
+        android:ems="18"
+        android:textAlignment="center"
+        android:id="@+id/txtPass"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/txtUser"
+        android:layout_alignEnd="@+id/txtUser" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOGIN"
+        android:textStyle="bold"
+        android:id="@+id/btnLogin"
+        android:padding="20dp"
+        android:background="#c0392b"
+        android:textColor="#ecf0f1"
+        android:textAlignment="center"
+        android:onClick="btn_login_OnClick"
+        android:layout_below="@+id/txtPass"
+        android:layout_marginTop="31dp"
+        android:layout_alignStart="@+id/txtPass"
+        android:layout_alignEnd="@+id/txtPass" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textSize="80dp"
+        android:textColor="#ecf0f1"
+        android:id="@+id/textView2"
+        android:layout_alignEnd="@+id/txtUser"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:textColor="#34495e"
+        android:id="@+id/textView4"
+        android:layout_above="@+id/txtPass"
+        android:layout_alignStart="@+id/txtPass" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:textColor="#34495e"
+        android:id="@+id/textView3"
+        android:layout_above="@+id/txtUser"
+        android:layout_alignStart="@+id/txtUser" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot Password"
+        android:textAlignment="textEnd"
+        android:textColor="#ffffff"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/btnLogin"
+        android:layout_alignStart="@+id/btnLogin"
+        android:layout_alignEnd="@+id/btnLogin" />
+
+
+</RelativeLayout>
